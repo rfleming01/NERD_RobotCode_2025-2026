@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import org.firstinspires.ftc.robotcore.external.navigation.Rotation;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -60,50 +61,45 @@ public class RobotHardware {
      */
     public void driveRobot(double Forward, double Rotation, double Strafe) {
         // Combine drive and turn for blended motion.
-        double FL_Drive  = Drive + Turn;
-        double right = Drive - Turn;
+        double FL_Drive  = - Forward - Rotation - Strafe;
+        double FR_Drive  = - Forward + Rotation + Strafe;
+        double BL_Drive  =   Forward - Rotation + Strafe;
+        double BR_Drive  =   Forward + Rotation - Strafe;
 
         // Scale the values so neither exceed +/- 1.0
-        double max = Math.max(Math.abs(left), Math.abs(right));
+        double max = Math.max(Math.abs(FL_Drive), Math.abs(FR_Drive));
+               max = Math.max(max, Math.abs(BL_Drive));
+               max = Math.max(max, Math.abs(BR_Drive));
+               
+        double min = Math.min(Math.abs(FL_Drive), Math.abs(FR_Drive));
+               min = Math.min(min, Math.abs(BL_Drive));
+               min = Math.min(min, Math.abs(BR_Drive));
+               
+               
         if (max > 1.0)
         {
-            left /= max;
-            right /= max;
+            FL_Drive /= max;
+            FR_Drive /= max;
+            BL_Drive /= max;
+            BR_Drive /= max;
+        }
+        
+        if (min < 1.0)
+        {
+            FL_Drive /= min;
+            FR_Drive /= min;
+            BL_Drive /= min;
+            BR_Drive /= min;
         }
 
-        // Use existing function to drive both wheels.
-        setDrivePower(left, right);
+        frontLeft.setPower(FL_Drive);
+        frontRight.setPower(FR_Drive);
+        backLeft.setPower(BL_Drive);
+        backRight.setPower(BR_Drive);
+        
     }
+    
+    
 
-    /**
-     * Pass the requested wheel motor powers to the appropriate hardware drive motors.
-     *
-     * @param leftWheel     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
-     * @param rightWheel    Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
-     */
-    public void setDrivePower(double leftWheel, double rightWheel) {
-        // Output the values to the motor drives.
-        leftDrive.setPower(leftWheel);
-        rightDrive.setPower(rightWheel);
-    }
-
-    /**
-     * Pass the requested arm power to the appropriate hardware drive motor
-     *
-     * @param power driving power (-1.0 to 1.0)
-     */
-    public void setArmPower(double power) {
-        armMotor.setPower(power);
-    }
-
-    /**
-     * Send the two hand-servos to opposing (mirrored) positions, based on the passed offset.
-     *
-     * @param offset
-     */
-    public void setHandPositions(double offset) {
-        offset = Range.clip(offset, -0.5, 0.5);
-        leftHand.setPosition(MID_SERVO + offset);
-        rightHand.setPosition(MID_SERVO - offset);
-    }
+    
 }
