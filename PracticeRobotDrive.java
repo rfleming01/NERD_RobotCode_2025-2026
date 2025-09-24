@@ -7,13 +7,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.RobotHardware;
+import org.firstinspires.ftc.teamcode.PracticeRobotHardware;
 
 @TeleOp(name="Basic: Omni Linear OpMode", group="Linear OpMode")
 
 public class RobotDrive extends LinearOpMode {
     
-    RobotHardware robot = new RobotHardware(this);
+    PracticeRobotHardware robot = new PracticeRobotHardware(this);
     
     private ElapsedTime runtime = new ElapsedTime();
 
