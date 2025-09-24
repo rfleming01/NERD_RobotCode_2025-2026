@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-public class RobotHardware {
+public class PracticeRobotHardware {
 
     /* Declare OpMode members. */
     private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
@@ -22,7 +22,7 @@ public class RobotHardware {
 
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
-    public RobotHardware (LinearOpMode opmode) {
+    public PracticeRobotHardware (LinearOpMode opmode) {
         myOpMode = opmode;
     }
 
